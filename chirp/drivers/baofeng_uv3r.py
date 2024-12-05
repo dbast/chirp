@@ -50,7 +50,7 @@ def uv3r_prep(radio):
     for _i in range(0, 10):
         try:
             return _uv3r_prep(radio)
-        except errors.RadioError as e:
+        except errors.RadioError:
             time.sleep(1)
 
     raise e

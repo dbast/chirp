@@ -1075,12 +1075,12 @@ class AnyTone5888UVIIIRadio(chirp_common.CloneModeRadio,
         return mem
 
     def set_memory(self, mem):
-        is_limit_chan = is_hyper_chan = False
+        is_hyper_chan = False
         if mem.number > (len(self._memobj.channels) +
                          len(self._memobj.limit_channels)):
             is_hyper_chan = True
         elif mem.number > len(self._memobj.channels):
-            is_limit_chan = True
+            pass
 
         _mem, _flg = self._get_memobjs(mem.number)
 

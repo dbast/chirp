@@ -95,7 +95,7 @@ def do_download(radio):
 
 
 def do_upload(radio):
-    ident = start_program(radio)
+    start_program(radio)
 
     s = chirp_common.Status()
     s.msg = 'Uploading'

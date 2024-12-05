@@ -1,23 +1,69 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v3.2.0
-  hooks:
-  - id: trailing-whitespace
-    exclude_types:
-      - binary
-    exclude: \.img$
-  - id: end-of-file-fixer
-    exclude_types:
-      - binary
-    exclude: \.img$
-  - id: check-yaml
-- repo: local
-  hooks:
-    - id: pep8
-      verbose: true
-      name: pep8
-      entry: env PATH=.tox/style/bin python tools/cpep8.py
-      files: \.py$
-      language: python
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: fix-byte-order-marker
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+        exclude: \.img$
+      - id: trailing-whitespace
+        exclude: \.img$
+      - id: end-of-file-fixer
+        exclude: \.img$
+      - id: check-yaml
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.2
+    hooks:
+      - id: ruff
+        args: [--fix]
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.13.0
+    hooks:
+      - id: mypy
+        args: [--config-file, .mypy.ini, chirp]
+        pass_filenames: false
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: python-no-eval
+        exclude: chirp/drivers/kenwood_itm.py$
+  - repo: local
+    hooks:
+      - id: six
+        name: check for no uses of six
+        types: [python]
+        entry: '\wsix\w|((from|import).*six)'
+        language: pygrep
+      - id: builtins
+        name: check for no uses of builtins
+        types: [python]
+        exclude: "chirp/wxui/__init__.py|tests/.*$"
+        entry: "(from|import).*builtins"
+        language: pygrep
+      - id: builtins
+        name: check for no uses of future
+        types: [python]
+        entry: '\wfuture\w'
+        language: pygrep
+      - id: past
+        name: check for no uses of past library
+        types: [python]
+        entry: "(from|import).*past(?!e)"
+        language: pygrep
+      - id: literals
+        name: check for translated strings be literals
+        types: [python]
+        entry: r'[^_]_\([^"\']'
+        language: pygrep
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.30.0
+    hooks:
+      - id: check-github-workflows
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+      - id: check-useless-excludes

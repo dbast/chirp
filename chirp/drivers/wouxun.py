@@ -666,7 +666,6 @@ class KGUVD1PRadio(chirp_common.CloneModeRadio,
                     raise
 
     def _set_fm_preset(self, settings):
-        obj = self._memobj
         for element in settings:
             try:
                 (bank, index) = \
@@ -1402,7 +1401,6 @@ class KGUV6DRadio(KGUVD1PRadio):
                     raise
 
     def _set_fm_preset(self, settings):
-        obj = self._memobj
         for element in settings:
             try:
                 (bank, index) = \

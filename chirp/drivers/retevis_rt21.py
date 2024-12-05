@@ -583,7 +583,7 @@ def _enter_programming_mode(radio):
     try:
         serial.write(_magic)
         if radio._echo:
-            chew = serial.read(len(_magic))  # Chew the echo
+            serial.read(len(_magic))  # Chew the echo
         for i in range(1, 5):
             ack = serial.read(1)
             if ack == CMD_ACK:
@@ -634,7 +634,7 @@ def _exit_programming_mode(radio):
     try:
         serial.write(b"E")
         if radio._echo:
-            chew = serial.read(1)  # Chew the echo
+            serial.read(1)  # Chew the echo
     except:
         raise errors.RadioError("Radio refused to exit programming mode")
 

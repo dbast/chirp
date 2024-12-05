@@ -388,7 +388,7 @@ class ICx90Radio(icf.IcomCloneModeRadio):
         return "".join(map(self.map_dtmf_icom2chirp, str(dtmf)))
 
     def apply_dtmf_autodial(self, setting, obj):
-        obj = self.dtmf_chirp2icom(setting.value)
+        self.dtmf_chirp2icom(setting.value)
 
     def get_settings(self):
         try:

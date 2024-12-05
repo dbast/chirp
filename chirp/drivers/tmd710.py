@@ -1547,21 +1547,21 @@ class KenwoodTMD710Radio(KenwoodTMx710Radio):
         radio.pipe.baudrate = BAUD
         cmc = b"0M PROGRAM" + TERM
         resp0 = _command(radio.pipe, cmc, 3, W8S)
-        junk = radio.pipe.read(16)       # flushit
+        radio.pipe.read(16)       # flushit
         for bkx in range(0, 0x09c):
             if bkx != 0x07f:            # Skip block 7f !!??
                 cmc = struct.pack('>cHB', b'R', bkx << 8, 0)
                 resp0 = _command(radio.pipe, cmc, 260, W8S)
-                junk = _command(radio.pipe, ACK, 1, W8S)
+                _command(radio.pipe, ACK, 1, W8S)
                 if len(resp0) < 260:
-                    junk = _command(radio.pipe, b"E", 2, W8S)
+                    _command(radio.pipe, b"E", 2, W8S)
                     sx = "Block 0x%x read error: " % bkx
                     sx += "Got %i bytes, expected 260." % len(resp0)
                     LOG.error(sx)
                     sx = "Block read error! Check debug.log"
                     raise errors.RadioError(sx)
                 if bkx == 0:   # 1st packet of 1st block
-                    mht = resp0[4:7]   # [57 00 00 00] 03 4b 01 ff ff ...
+                    resp0[4:7]   # [57 00 00 00] 03 4b 01 ff ff ...
                     data = resp0[5:6]  # 2nd byte (4b) replaces 1st
                     data += resp0[5:]  # then bytes 2 on (4b 4b 01 ff ...)
                 else:
@@ -1570,15 +1570,15 @@ class KenwoodTMD710Radio(KenwoodTMx710Radio):
         cmc = struct.pack('>cHB', b'R', 0xFEF0, 0x10)
         resp0 = _command(radio.pipe, cmc, 0x014, W8S)
         data += resp0[4:]
-        junk = _command(radio.pipe, ACK, 1, W8S)
+        _command(radio.pipe, ACK, 1, W8S)
         _update_status(radio, status)
         cmc = struct.pack('>cHB', b'R', 0xFF00, 0x90)
         resp0 = _command(radio.pipe, cmc, 0x094, W8S)
         data += resp0[4:]
-        junk = _command(radio.pipe, ACK, 1, W8S)
+        _command(radio.pipe, ACK, 1, W8S)
         _update_status(radio, status)
         # Exit Prog mode, no TERM
-        resp = _command(radio.pipe, b"E", 2, W8S)     # Rtns 06 0d
+        _command(radio.pipe, b"E", 2, W8S)     # Rtns 06 0d
         radio.pipe.baudrate = BAUD
         return data
 
@@ -1602,15 +1602,15 @@ class KenwoodTMD710Radio(KenwoodTMx710Radio):
         cmc = b"R" + bytes([0, 0, 4])
         resp0 = _command(radio.pipe, cmc, 8, W8S)
         mht0 = resp0[4:]    # Expecting [57 00 00 04] 03 4b 01 ff
-        junk = _command(radio.pipe, ACK, 1, W8S)
+        _command(radio.pipe, ACK, 1, W8S)
         cmc = b"W" + bytes([0, 0, 1, 0xff])
-        junk = _command(radio.pipe, cmc, 1, W8S)     # responds ACK
+        _command(radio.pipe, cmc, 1, W8S)     # responds ACK
         cmc = b"R" + bytes([0x80, 0, 3])
         resp = _command(radio.pipe, cmc, 7, W8S)   # [57 80 00 03] 00 33 00
         mht1 = resp[4:]
-        junk = _command(radio.pipe, ACK, 1, W8S)
+        _command(radio.pipe, ACK, 1, W8S)
         cmc = b"W" + bytes([0x80, 0, 1, 0xff])
-        junk = _command(radio.pipe, cmc, 1, W8S)
+        _command(radio.pipe, cmc, 1, W8S)
         imgadr = 4      # After 03 4b 01 ff
         for bkx in range(0, radio._num_packets[0]):
             cmc = b"W" + bytes([bkx, 0, 0])
@@ -1991,7 +1991,7 @@ class KenwoodTMD710GRadio(KenwoodTMx710Radio):
             resp0 = _command(radio.pipe, cmc, 3, W8S)
         radio.pipe.baudrate = 57600     # PROG mode is always 57.6
         LOG.debug("Switching to 57600 baud download.")
-        junk = radio.pipe.read(1)       # trailing byte
+        radio.pipe.read(1)       # trailing byte
         for blkn in range(0, radio._num_blocks):
             for bkx in range(0, radio._num_packets[blkn]):
                 addr = (radio._block_addr[blkn] << 8) | (bkx << 8)
@@ -1999,7 +1999,7 @@ class KenwoodTMD710GRadio(KenwoodTMx710Radio):
                                  radio._make_command(b'R', addr, 0),
                                  radio._packet_size[blkn], W8S)
                 if len(resp0) < radio._packet_size[blkn]:
-                    junk = _command(radio.pipe, b"E", 0, W8S)
+                    _command(radio.pipe, b"E", 0, W8S)
                     lb = len(resp0)
                     xb = radio._packet_size[blkn]
                     sx = "Block 0x%x, 0x%x read error: " % (blkn, bkx)
@@ -2016,7 +2016,7 @@ class KenwoodTMD710GRadio(KenwoodTMx710Radio):
                     data += resp0[5:]       # skip cmd echo
                 _update_status(radio, status)        # UI Update
         # Exit Prog mode, no TERM
-        resp = _command(radio.pipe, b"E", 0, W8S)
+        _command(radio.pipe, b"E", 0, W8S)
         radio.pipe.baudrate = BAUD
         return data
 
@@ -2038,7 +2038,7 @@ class KenwoodTMD710GRadio(KenwoodTMx710Radio):
         resp0 = _command(radio.pipe, b"0M PROGRAM" + TERM, 3, W8S)
         radio.pipe.baudrate = 57600
         LOG.debug("Switching to 57600 baud upload.")
-        junk = radio.pipe.read(1)
+        radio.pipe.read(1)
         # Read block 0 magic header thingy, save it
         addr = radio._block_addr[0] << 8
         resp0 = _command(radio.pipe,
@@ -2083,6 +2083,6 @@ class KenwoodTMD710GRadio(KenwoodTMx710Radio):
         cmc = radio._make_command(b'Z', radio._block_addr[0], 1, mht0[0:1])
         resp0 = _command(radio.pipe, cmc, 16, W8S)
         # Write E to Exit PROG mode
-        resp = _command(radio.pipe, b"E", 0, W8S)
+        _command(radio.pipe, b"E", 0, W8S)
         radio.pipe.baudrate = BAUD
         return

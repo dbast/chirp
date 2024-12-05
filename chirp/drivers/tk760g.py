@@ -418,7 +418,7 @@ def _recv(radio):
         raise errors.RadioError('No response from radio')
     elif cmd == b'Z':
         # Empty "zero" block
-        ff = _raw_recv(radio, 1)
+        _raw_recv(radio, 1)
         _handshake(radio, "after zero block")
         return b'\xff' * 256
     elif cmd != b'W':
@@ -471,7 +471,7 @@ def _open_radio(radio, status):
     _raw_send(radio, b"\x02")
     rid = _raw_recv(radio, 8)
 
-    if not (radio.TYPE in rid):
+    if radio.TYPE not in rid:
         # bad response, properly close the radio before exception
         _close_radio(radio)
 
@@ -1117,7 +1117,6 @@ class Kenwood_Serie_60G(chirp_common.CloneModeRadio,
         mess = self._memobj.message
         keys = self._memobj.keys
         idm = self._memobj.id
-        passwd = self._memobj.passwords
 
         # basic features of the radio
         basic = RadioSettingGroup("basic", "Basic Settings")

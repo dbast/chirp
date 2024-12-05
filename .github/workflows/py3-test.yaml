@@ -11,7 +11,7 @@ jobs:
       - name: Run tox
         uses: ./.github/actions/py3-tox
         with:
-          tox_target: style
+          tox_target: pre-commit
 
   unit:
     name: Unit tests

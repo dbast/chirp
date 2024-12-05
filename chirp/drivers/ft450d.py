@@ -499,7 +499,7 @@ class FT450DRadio(yaesu_clone.YaesuCloneModeRadio):
         self.pipe.stopbits = self.COM_STOP
         self.pipe.rtscts = False
 
-        start = time.time()
+        time.time()
 
         data = b""
         blocks = 0
@@ -529,7 +529,7 @@ class FT450DRadio(yaesu_clone.YaesuCloneModeRadio):
         self.pipe.stopbits = self.COM_STOP
         self.pipe.rtscts = False
         delay = 0.5
-        start = time.time()
+        time.time()
         blocks = 0
         pos = 0
         status = chirp_common.Status()

@@ -476,7 +476,7 @@ def _read_block(radio, start, size, first_command=False):
 
 
 def _get_aux_data_from_radio(radio):
-    block0 = _read_block(radio, 0x1E80, 0x40, True)
+    _read_block(radio, 0x1E80, 0x40, True)
     block1 = _read_block(radio, 0x1EC0, 0x40, False)
     block2 = _read_block(radio, 0x1F00, 0x40, False)
     block3 = _read_block(radio, 0x1F40, 0x40, False)
@@ -504,7 +504,7 @@ def _get_radio_firmware_version(radio):
         # turns out to be a workaround for this problem.
 
         # read and disregard block0
-        block0 = _read_block(radio, 0x1E80, 0x40, True)
+        _read_block(radio, 0x1E80, 0x40, True)
         block1 = _read_block(radio, 0x1EC0, 0x40, False)
         block2 = _read_block(radio, 0x1FC0, 0x40, False)
 

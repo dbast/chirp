@@ -282,7 +282,6 @@ def _rt76p_write_block(radio, block_addr, block_size):
 
 
 def do_download(radio):
-    serial = radio.pipe
     LOG.debug("download")
     _rt76p_enter_programming_mode(radio)
 

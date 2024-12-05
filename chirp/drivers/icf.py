@@ -332,10 +332,9 @@ def _clone_from_radio(radio):
     md = get_model_data(radio)
 
     try:
-        radio_rev = decode_model(md)
+        decode_model(md)
     except Exception:
         LOG.error('Failed to decode model data')
-        radio_rev = None
 
     if md[0:4] != radio.get_model():
         LOG.info("This model: %s" % util.hexprint(md[0:4]))

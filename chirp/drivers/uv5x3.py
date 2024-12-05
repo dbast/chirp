@@ -80,7 +80,6 @@ LIST_DTMF_SPECIAL_VALUES = [0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x00]
 def model_match(cls, data):
     """Match the opened/downloaded image to the correct version"""
     match_rid1 = False
-    match_rid2 = False
 
     rid1 = data[0x1EF0:0x1EF7]
 

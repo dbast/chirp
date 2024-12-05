@@ -1343,7 +1343,7 @@ class TS590Radio(KenwoodLiveRadio):
         mem.freq = 0
         mem.offset = 0
         spx = "MW0%03i00000000000000000000000000000000000" % number
-        rx = command(self.pipe, spx)      # Send MW0
+        command(self.pipe, spx)      # Send MW0
         return mem
 
     def set_memory(self, mem):
@@ -1387,7 +1387,7 @@ class TS590Radio(KenwoodLiveRadio):
         spx = "%011i%1i%1i%1i%02i%02i000%1i0000000000%02i%1i%s" \
             % (xfreq, xmode, xdata, xtmode, xrtone,
                 xctone, xfltr, xfm, xskip, mem.name)
-        rx = command(self.pipe, pfx, spx)      # Send MW0
+        command(self.pipe, pfx, spx)      # Send MW0
         if mem.offset != 0:
             pfx = "MW1%03i" % mem.number
             xfreq = mem.freq - mem.offset
@@ -1396,7 +1396,7 @@ class TS590Radio(KenwoodLiveRadio):
             spx = "%011i%1i%1i%1i%02i%02i000%1i0000000000%02i%1i%s" \
                 % (xfreq, xmode, xdata, xtmode, xrtone,
                    xctone, xfltr, xfm, xskip, mem.name)
-            rx = command(self.pipe, pfx, spx)      # Send MW1
+            command(self.pipe, pfx, spx)      # Send MW1
 
 
 @directory.register
@@ -1523,14 +1523,13 @@ class TS480Radio(KenwoodLiveRadio):
         mem.freq = 0
         mem.offset = 0
         spx = "MW0%03i00000000000000000000000000000000000" % number
-        rx = command(self.pipe, spx)      # Send MW0
+        command(self.pipe, spx)      # Send MW0
         return mem
 
     def set_memory(self, mem):
         """Send UI column data (mem) to radio"""
         pfx = "MW0%03i" % mem.number
         xtmode = 0
-        xdata = 0
         xrtone = 8
         xctone = 8
         xskip = 0
@@ -1558,7 +1557,7 @@ class TS480Radio(KenwoodLiveRadio):
         spx = "%011i%1i%1i%1i%02i%02i00000000000000%02i%s" \
             % (xfreq, xmode, xskip, xtmode, xrtone,
                 xctone, xstep, mem.name)
-        rx = command(self.pipe, pfx, spx)      # Send MW0
+        command(self.pipe, pfx, spx)      # Send MW0
         if mem.offset != 0:             # Don't send MW1 if empty
             pfx = "MW1%03i" % mem.number
             xfreq = mem.freq - mem.offset
@@ -1567,4 +1566,4 @@ class TS480Radio(KenwoodLiveRadio):
             spx = "%011i%1i%1i%1i%02i%02i00000000000000%02i%s" \
                   % (xfreq, xmode, xskip, xtmode, xrtone,
                      xctone, xstep, mem.name)
-            rx = command(self.pipe, pfx, spx)      # Send MW1
+            command(self.pipe, pfx, spx)      # Send MW1

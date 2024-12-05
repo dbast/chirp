@@ -174,7 +174,7 @@ class CSVRadio(chirp_common.FileBackedRadio):
                 continue
             try:
                 val = get_datum_by_header(headers, line, header)
-                if not val and typ == int:
+                if not val and typ is int:
                     val = None
                 else:
                     val = typ(val)

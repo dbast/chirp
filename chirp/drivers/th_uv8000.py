@@ -373,7 +373,7 @@ def _download(radio):
 
         # Sending the read request
         _rawsend(radio, frame)
-        dx = _rawrecv(radio, 4)
+        _rawrecv(radio, 4)
 
         # Now we read data
         d = _recv(radio, addr, BLOCK_SIZE)
@@ -879,7 +879,7 @@ class THUV8000Radio(chirp_common.CloneModeRadio):
 
     def _set_special(self, mem):
 
-        cur_mem = self._get_special(self.SPECIAL_MEMORIES_REV[mem.number])
+        self._get_special(self.SPECIAL_MEMORIES_REV[mem.number])
 
         if mem.number == -2:    # upper frq[1]
             _mem = self._memobj.frq[1]

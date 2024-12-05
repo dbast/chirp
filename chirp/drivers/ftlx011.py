@@ -707,7 +707,7 @@ class ftlx011(chirp_common.CloneModeRadio, chirp_common.ExperimentalRadio):
                 name = element.get_name()
                 value = element.value
 
-                obj = getattr(_settings, name)
+                getattr(_settings, name)
                 if name in ["off_hook", "talk_back", "monitor"]:
                     setattr(_settings, name, not value)
                 else:

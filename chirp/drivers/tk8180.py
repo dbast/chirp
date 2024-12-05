@@ -446,7 +446,6 @@ class KenwoodTKx180Radio(chirp_common.CloneModeRadio):
         return self._model.startswith(b'P')
 
     def probe_layout(self):
-        start_addrs = []
         tmp_format = '#seekto 0x0A00; ul16 zone_starts[128];'
         mem = bitwise.parse(tmp_format, self._mmap)
         zone_format = """struct zoneinfo {
@@ -544,7 +543,6 @@ class KenwoodTKx180Radio(chirp_common.CloneModeRadio):
                 dest_zoneinfo.set_raw(source_zoneinfo.get_raw(asbytes=False))
                 dest_zoneinfo.count = count
 
-                source_i = 0
                 for dest_i in range(0, min(count, old_count)):
                     dest[dest_i].set_raw(source[dest_i].get_raw(asbytes=False))
             else:
@@ -1139,7 +1137,6 @@ class KenwoodTKx180Radio(chirp_common.CloneModeRadio):
             ostgroup.append(ost)
 
     def get_settings(self):
-        settings = self._memobj.settings
 
         zones = self._get_zones()
         common1 = self._get_common1()

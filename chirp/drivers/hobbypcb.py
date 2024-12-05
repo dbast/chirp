@@ -66,12 +66,15 @@ class HobbyPCBRSUV3Radio(chirp_common.LiveRadio):
         resp = b''
 
         if rsize is None:
-            complete = lambda: time.sleep(0.1) is None
+            def complete():
+                return time.sleep(0.1) is None
         elif rsize == 0:
             rsize = 1
-            complete = lambda: resp.endswith(b'\r')
+            def complete():
+                return resp.endswith(b'\r')
         else:
-            complete = lambda: len(resp) >= rsize
+            def complete():
+                return len(resp) >= rsize
 
         while not complete():
             chunk = self.pipe.read(rsize)

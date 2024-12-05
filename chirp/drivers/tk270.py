@@ -17,13 +17,13 @@ import time
 import struct
 import logging
 
-LOG = logging.getLogger(__name__)
-
 from chirp import chirp_common, directory, memmap
 from chirp import bitwise, errors, util
 from chirp.settings import RadioSettingGroup, RadioSetting, \
     RadioSettingValueBoolean, RadioSettingValueList, \
     RadioSettingValueString, RadioSettings
+
+LOG = logging.getLogger(__name__)
 
 MEM_FORMAT = """
 #seekto 0x0010;
@@ -204,7 +204,7 @@ def open_radio(radio):
     exito = False
     for i in range(0, 5):
         for i in range(0, len(magic)):
-            ack = rawrecv(radio, 1)
+            rawrecv(radio, 1)
             time.sleep(0.05)
             send(radio, magic[i])
 
@@ -226,7 +226,7 @@ def open_radio(radio):
     ident = rawrecv(radio, 8)
     handshake(radio, "Comm error after ident", True)
 
-    if not (radio.TYPE in ident):
+    if radio.TYPE not in ident:
         LOG.debug("Incorrect model ID, got %s" % util.hexprint(ident))
         msg = "Incorrect model ID, got %s, it not contains %s" % \
             (ident[0:5], radio.TYPE)
@@ -270,7 +270,6 @@ def do_upload(radio):
     status.max = MEM_SIZE / BLOCK_SIZE
     status.msg = "Cloning to radio..."
     radio.status_fn(status)
-    count = 0
 
     for addr in MEM_BLOCKS:
         # UI Update

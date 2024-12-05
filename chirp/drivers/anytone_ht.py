@@ -325,7 +325,6 @@ def _send(radio, cmd, addr, length, data=None):
 def _download(radio):
     _ident(radio)
 
-    memobj = None
 
     data = b""
     for start, end in radio._ranges:

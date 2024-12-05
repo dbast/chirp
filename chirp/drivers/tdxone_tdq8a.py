@@ -295,7 +295,7 @@ def _ident_radio(radio):
 def _download(radio):
     """Get the memory map"""
     # put radio in program mode
-    ident = _ident_radio(radio)
+    _ident_radio(radio)
 
     # UI progress
     status = chirp_common.Status()
@@ -354,7 +354,7 @@ def _upload(radio):
     _rawsend(radio, frame)
 
     # now we read
-    d = _recv(radio, addr, radio._recv_block_size)
+    _recv(radio, addr, radio._recv_block_size)
 
     time.sleep(0.05)
 

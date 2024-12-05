@@ -1193,7 +1193,7 @@ class FT1Radio(yaesu_clone.YaesuCloneModeRadio):
                 flag.nosubvfo = False    # Available in both VFOs
         if regtype != "Home":
             self._debank(mem)
-            ndx = num - 1
+            num - 1
             flag.used = not mem.empty
             flag.valid = True
             flag.skip = mem.skip == "S"
@@ -1524,7 +1524,7 @@ class FT1Radio(yaesu_clone.YaesuCloneModeRadio):
                     menu.append(rs)
 
                 body = str(aprs_beacon[index].body).rstrip("\xFF")
-                checksum = body[-2:]
+                body[-2:]
                 body = ''.join(s for s in body[:-2]
                                if s in string.printable).translate(
                                    str.maketrans(

@@ -1,0 +1,22 @@
+[tool.ruff]
+builtins = ["_", "ngettext"]
+
+[tool.ruff.lint]
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+# see https://docs.astral.sh/ruff/rules/
+select = [
+    "F", # pyflakes (part of flake8)
+    "E", # pycodestyle errors (part of flake8)
+    "W", # pycodestyle warnings (part of flake8)
+]
+ignore = [
+    "E741", # Ambiguous variable name: `l`
+    "E501", # Line too long
+]
+
+[tool.ruff.lint.per-file-ignores]
+"chirp/drivers/**" = [
+    "E722", # Do not use bare `except`
+    "F821", # F821 Undefined name
+]

@@ -203,7 +203,7 @@ class ChirpMemoryColumn(object):
         return True
 
     def _render_value(self, memory, value):
-        if value is []:
+        if value == []:
             raise Exception(
                 _('Found empty list value for %(name)s: %(value)r' % {
                     'name': self._name,

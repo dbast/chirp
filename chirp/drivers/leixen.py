@@ -277,7 +277,7 @@ def recv(radio, readdata=True):
         if len(data) != length:
             raise errors.RadioError("Radio sent %i bytes (expected %i)" % (
                 len(data), length))
-        chk = radio.pipe.read(1)
+        radio.pipe.read(1)
     else:
         data = b""
     return addr, data
@@ -352,7 +352,7 @@ def do_upload(radio):
 
 def finish(radio):
     send(radio, b"\x64\x01\x6F\x0A")
-    ack = radio.pipe.read(8)
+    radio.pipe.read(8)
 
 
 @directory.register
@@ -624,9 +624,9 @@ class LeixenVV898Radio(chirp_common.CloneModeRadio):
         # autoset display to name if filled, else show frequency
         if mem.extra:
             # mem.extra only seems to be populated when called from edit panel
-            aliasop = mem.extra["aliasop"]
+            mem.extra["aliasop"]
         else:
-            aliasop = None
+            pass
         if mem.name:
             _mem.aliasop = False
         else:

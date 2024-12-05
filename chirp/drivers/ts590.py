@@ -157,7 +157,7 @@ def command(ser, cmd, rsplen, w8t=0.01, exts=""):
     # rsplen is expected response char count, including terminator
     #       If rsplen = 0 then do not read after write
 
-    start = time.time()
+    time.time()
     #   LOCK.acquire()
     stx = cmd       # preserve cmd for response check
     stx = stx + exts + ";"    # append arguments
@@ -165,7 +165,7 @@ def command(ser, cmd, rsplen, w8t=0.01, exts=""):
     LOG.debug("PC->RADIO [%s]" % stx)
     ts = time.time()        # implement the wait after command
     while (time.time() - ts) < w8t:
-        ix = 0      # NOP
+        pass      # NOP
     result = ""
     if rsplen > 0:  # read response
         result = ser.read(rsplen)
@@ -184,7 +184,7 @@ def _connect_radio(radio):
     # Flush the input buffer
     radio.pipe.timeout = 0.005
     radio.pipe.baudrate = 9600
-    junk = radio.pipe.read(256)
+    radio.pipe.read(256)
     radio.pipe.timeout = STIMEOUT
 
     for bd in bauds:
@@ -478,7 +478,7 @@ def _write_sets(radio):
     for ix in range(32):
         scm = "AS0%02i%011i%1i%1i" % (ix, _asf[ix].asfreq,
                                       _asf[ix].asmode, _asf[ix].asdata)
-        result0 = command(radio.pipe, scm, stlen, W8S)
+        command(radio.pipe, scm, stlen, W8S)
         snx += 1
         status.cur = snx
         radio.status_fn(status)
@@ -487,38 +487,38 @@ def _write_sets(radio):
         for kx in range(5):
             nx = ix * 5 + kx
             scm = "SS%1i%1i%011i" % (ix, kx, _ssf[nx].ssfreq)
-            result0 = command(radio.pipe, scm, stlen, W8S)
+            command(radio.pipe, scm, stlen, W8S)
             snx += 1
             status.cur = snx
             radio.status_fn(status)
     # Send 16 EQ
     for ix in range(8):
         scm = "EQ0%1i%1i" % (ix, _eqx[ix].txeq)
-        result0 = command(radio.pipe, scm, stlen, W8S)
+        command(radio.pipe, scm, stlen, W8S)
         scm = "EQ1%1i%1i" % (ix, _eqx[ix].rxeq)
-        result0 = command(radio.pipe, scm, stlen, W8S)
+        command(radio.pipe, scm, stlen, W8S)
         snx += 2
         status.cur = snx
         radio.status_fn(status)
     # Send 11 thingies
     scm = "AG0%03i" % _sets.ag
-    result0 = command(radio.pipe, scm, stlen, W8S)
+    command(radio.pipe, scm, stlen, W8S)
     scm = "AN%1i%1i%1i" % (_sets.an1, _sets.an2, _sets.an3)
-    result0 = command(radio.pipe, scm, stlen, W8S)
+    command(radio.pipe, scm, stlen, W8S)
     scm = "FA%011i" % _sets.fa
-    result0 = command(radio.pipe, scm, stlen, W8S)
+    command(radio.pipe, scm, stlen, W8S)
     scm = "FB%011i" % _sets.fb
-    result0 = command(radio.pipe, scm, stlen, W8S)
+    command(radio.pipe, scm, stlen, W8S)
     scm = "MG%03i" % _sets.mg
-    result0 = command(radio.pipe, scm, stlen, W8S)
+    command(radio.pipe, scm, stlen, W8S)
     scm = "PC%03i" % _sets.pc
-    result0 = command(radio.pipe, scm, stlen, W8S)
+    command(radio.pipe, scm, stlen, W8S)
     scm = "RG%03i" % _sets.rg
-    result0 = command(radio.pipe, scm, stlen, W8S)
+    command(radio.pipe, scm, stlen, W8S)
     scm = "TP%03i" % _sets.tp
-    result0 = command(radio.pipe, scm, stlen, W8S)
+    command(radio.pipe, scm, stlen, W8S)
     scm = "MF0"   # Select menu A/B
-    result0 = command(radio.pipe, scm, stlen, W8S)
+    command(radio.pipe, scm, stlen, W8S)
     snx += 11
     status.cur = snx
     radio.status_fn(status)
@@ -545,14 +545,14 @@ def _write_sets(radio):
                     else:   # Gotta use the cross reference dict for cmd
                         scm = "%s0000%i" % (cmx, getattr(_mex[ix],
                                             radio.EX_X[cmx].lower()))
-            result0 = command(radio.pipe, scm, stlen, W8S)
+            command(radio.pipe, scm, stlen, W8S)
             snx += 1
             status.cur = snx
             radio.status_fn(status)
     # Now set the inidial menu selection back
-    result0 = command(radio.pipe, "MF", 0, W8L, "%1i" % _sets.mf)
+    command(radio.pipe, "MF", 0, W8L, "%1i" % _sets.mf)
     # And the original Beep Volume
-    result0 = command(radio.pipe, "EX0050000%2i" % BEEPVOL, 0, W8L)
+    command(radio.pipe, "EX0050000%2i" % BEEPVOL, 0, W8L)
     return
 
 
@@ -953,7 +953,6 @@ class TS590Radio(chirp_common.CloneModeRadio):
         # Callback functions
         def _my_readonly(setting, obj, atrb):
             """NOP callback, prevents writing the setting"""
-            vx = 0
             return
 
         def my_adjraw(setting, obj, atrb, fix=0, ndx=-1):

@@ -1535,7 +1535,6 @@ class KG935GRadio(chirp_common.CloneModeRadio,
             c = str2callid(setting.value)
             obj.cid = c
 
-        callchars = "0123456789"
         for i in range(1, 21):
             _msg = ""
             _msg1 = str(getattr(_callname, 'call_name%i' % i)).split('\0')[0]

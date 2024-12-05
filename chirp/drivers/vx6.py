@@ -898,7 +898,7 @@ class VX6Radio(yaesu_clone.YaesuCloneModeRadio):
                     _settings = self._memobj.dtmf[idx]
                     _settings.memory = newval
                     continue
-                oldval = getattr(_settings, setting)
+                getattr(_settings, setting)
                 newval = element.value
                 if setting == "arts_cwid_alpha":
                     newval = self._encode_chars(newval)

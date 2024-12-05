@@ -1231,7 +1231,7 @@ class FT2900Radio(YaesuCloneModeRadio):
                     LOG.debug("Using apply callback")
                     element.run_apply_callback()
                 else:
-                    obj = getattr(_settings, name)
+                    getattr(_settings, name)
                     setattr(_settings, name, value)
 
                 LOG.debug("Setting %s: %s" % (name, value))

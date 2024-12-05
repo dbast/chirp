@@ -256,7 +256,7 @@ def _t18_enter_programming_mode(radio):
     try:
         serial.write(_magic)
         if radio._echo:
-            chew = serial.read(len(_magic))  # Chew the echo
+            serial.read(len(_magic))  # Chew the echo
         ack = serial.read(1)
     except:
         raise errors.RadioError("Error communicating with radio")
@@ -303,7 +303,7 @@ def _t18_exit_programming_mode(radio):
     try:
         serial.write(radio.CMD_EXIT)
         if radio._echo:
-            chew = serial.read(1)  # Chew the echo
+            serial.read(1)  # Chew the echo
     except:
         raise errors.RadioError("Radio refused to exit programming mode")
 

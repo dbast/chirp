@@ -198,11 +198,10 @@ def open_radio(radio):
 
     magic = b"PROGRAM"
     LOG.debug("Sending MAGIC")
-    exito = False
 
     # The radio sends a continuous stream of 0xFF while idling in normal
     # operating mode. Chew those up so we can pace it below.
-    devnull = rawrecv(radio, 256)
+    rawrecv(radio, 256)
 
     # "Pace" the radio's output by sending one byte of the magic string for
     # every 0xFF we get from the radio
@@ -231,7 +230,7 @@ def open_radio(radio):
     handshake(radio, "Comm error after ident", True)
     LOG.debug("Correct get ident and handshake")
 
-    if not (radio.TYPE in ident):
+    if radio.TYPE not in ident:
         LOG.debug("Incorrect model ID:")
         LOG.debug(util.hexprint(ident))
         msg = "Incorrect model ID, got %s, it not contains %s" % \
@@ -279,7 +278,6 @@ def do_upload(radio):
     status.max = MEM_SIZE // BLOCK_SIZE
     status.msg = "Cloning to radio..."
     radio.status_fn(status)
-    count = 0
 
     for addr in MEM_BLOCKS:
         # UI Update

@@ -18,56 +18,14 @@ echo
 
 git diff ${BASE}.. '*.py' | grep '^+' > added_lines
 
-if grep -E '(from|import).*six' added_lines; then
-    fail No new uses of future
-fi
-
-if grep -E '\wsix\w' added_lines; then
-    fail No new uses of six
-fi
-
-if grep -E '(from|import).*builtins' added_lines; then
-    fail No new uses of future
-fi
-
-if grep -E '\wfuture\w' added_lines; then
-    fail No new uses of future
-fi
-
-if grep -E '(from|import).*past(?!e)' added_lines; then
-    fail Use of past library not allowed
-fi
-
 if grep -E 'MemoryMap\(' added_lines; then
     fail New uses of MemoryMap should be MemoryMapBytes
-fi
-
-if grep -E "[^_]_\([^\"']" added_lines; then
-    fail 'Translated strings must be literals!'
-fi
-
-if grep -E "eval\(" added_lines; then
-    fail 'Use of eval() is dangerous and not permitted!'
-fi
-
-if git diff ${BASE}.. 'tools/cpep8.manifest' | tail -n +5 | grep -q '^+'; then
-    fail 'Do not add new files to cpep8.manifest; no longer needed'
-fi
-
-if git diff ${BASE}.. 'tools/cpep8.blacklist' | tail -n +5 | grep -q '^+'; then
-    fail 'Do not add new files to cpep8.blacklist; fix the code'
 fi
 
 grep -i 'license' added_lines > license_lines
 if grep -ivE '(GNU General Public License|Free Software Foundation|gnu.org.licenses)' license_lines; then
     fail 'Files must be GPLv3 licensed (or not contain any license language)'
 fi
-
-for file in $(git diff --name-only ${BASE}..); do
-    if file $file | grep -q CRLF; then
-        fail "$file : Files should be LF (Unix) format, not CR (Mac) or CRLF (Windows)"
-    fi
-done
 
 #if grep 'def match_model' added_lines; then
 #    fail 'New drivers should not have match_model() implemented as it is not needed'

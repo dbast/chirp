@@ -345,9 +345,9 @@ class TYTTH7800Base(chirp_common.Radio):
         # autoset display to name if filled, else show frequency
         if mem.extra:
             # mem.extra only seems to be populated when called from edit panel
-            display = mem.extra["display"]
+            mem.extra["display"]
         else:
-            display = None
+            pass
         if mem.name:
             _mem.display = True
         else:

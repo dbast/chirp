@@ -898,7 +898,7 @@ class BFT1(chirp_common.CloneModeRadio, chirp_common.ExperimentalRadio):
                     LOG.debug("Using apply callback")
                     element.run_apply_callback()
                 else:
-                    obj = getattr(_settings, name)
+                    getattr(_settings, name)
                     setattr(_settings, name, value)
 
                 LOG.debug("Setting %s: %s" % (name, value))
